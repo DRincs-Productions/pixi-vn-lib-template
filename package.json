@@ -10,7 +10,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup --config tsup.config.ts",
+    "build:post": "node scripts/replace-pixi.js",
+    "build": "tsup --config tsup.config.ts && npm run build:post",
     "test": "vitest"
   },
   "exports": {
@@ -22,6 +23,7 @@
     }
   },
   "devDependencies": {
+    "@esotericsoftware/spine-pixi-v8": "^4.2.96",
     "@types/crypto-js": "^4.2.2",
     "crypto-js": "^4.2.0",
     "jsdom": "^27.0.0",
