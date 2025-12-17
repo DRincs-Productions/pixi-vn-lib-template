@@ -11,11 +11,11 @@ export default defineConfig({
     dts: true, // Generate declaration file (.d.ts)
     treeshake: true,
     // sourcemap: true, // Generate sourcemap, it was removed because otherwise it would explode
-    clean: false,
+    clean: true,
     minify: true,
     bundle: true,
     skipNodeModulesBundle: false, // Skip bundling of node_modules
-    external: ["@drincs/pixi-vn"],
+    external: ["@drincs/pixi-vn", "pixi.js"],
     outExtension({ format }) {
         return {
             js: format === "esm" ? ".mjs" : ".cjs",
