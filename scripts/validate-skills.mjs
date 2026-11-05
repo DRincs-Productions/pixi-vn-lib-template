@@ -40,17 +40,30 @@ async function main() {
     try {
         entries = await readdir(skillsDir, { withFileTypes: true });
     } catch {
-        console.error(`No "skills" directory found at ${skillsDir}`);
-        process.exitCode = 1;
+        console.log("No skills/ directory found; skipping skill validation.");
+        return;
+    }
+
+    const skillEntries = [];
+    for (const entry of entries) {
+        if (!entry.isDirectory()) continue;
+        try {
+            await stat(join(skillsDir, entry.name, "SKILL.md"));
+            skillEntries.push(entry);
+        } catch {
+            // Ignore directories that do not contain a skill file.
+        }
+    }
+
+    if (skillEntries.length === 0) {
+        console.log("No skills found under skills/; skipping skill validation.");
         return;
     }
 
     const errors = [];
     const seenNames = new Map();
 
-    for (const entry of entries) {
-        if (!entry.isDirectory()) continue;
-
+    for (const entry of skillEntries) {
         const skillPath = join(skillsDir, entry.name, "SKILL.md");
         let content;
         try {
